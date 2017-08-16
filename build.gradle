@@ -1,0 +1,66 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+
+version = '1.0'
+
+jar {
+    into("lib") {
+        from configurations.compile
+    }
+    manifest {
+        attributes 'Implementation-Title': 'BFIDInsertOrange'
+        attributes 'Main-Class': 'com.o2.api.MainApp'
+    }
+}
+
+
+task createJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'BFIDInsertOrange',
+                'Implementation-Version': version,
+                'Main-Class': 'com.o2.api.MainApp'
+    }
+
+    task copyToLib(type: Copy){
+        into "$buildDir/output/lib"
+        from configurations.compile
+    }
+    baseName = project.name
+
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    with jar
+}
+
+mainClassName = "com.o2.api.MainApp"
+
+repositories {
+    maven {
+        url "http://central.maven.org/maven2/"
+    }
+
+    buildscript{
+        repositories{
+            flatDir{
+                dirs 'libs'
+            }
+        }
+    }
+}
+
+dependencies {
+    compile group: 'org.springframework', name: 'spring-jdbc', version: '4.3.10.RELEASE'
+    compile group: 'org.springframework', name: 'spring-context', version: '4.3.10.RELEASE'
+    compile files('libs/ojdbc14.jar')
+}
+
+sourceSets.main.resources.srcDirs = ['src/main/resources']
+
+applicationDistribution.from(files('beans.xml', 'NullBFIDUids')) {
+    into('bin/')
+}

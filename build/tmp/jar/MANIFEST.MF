@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Implementation-Title: BFIDInsertOrange
+Main-Class: com.o2.api.MainApp
+
