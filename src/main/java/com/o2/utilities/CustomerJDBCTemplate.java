@@ -1,7 +1,6 @@
 package com.o2.utilities;
 
 import com.o2.dao.CustomerDao;
-import com.o2.utilities.IdentityMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
@@ -17,7 +16,13 @@ public class CustomerJDBCTemplate implements CustomerDao {
     }
 
     public void update(int custNum) {
-        String SQL = "UPDATE CUSTOMER SET O2BFID =(O2BFID_SEQ.NEXTVAL) WHERE CUSTNUM= " + custNum;
+        String SQL = "UPDATE CUSTOMER SET O2BFID=(O2BFID_SEQ.NEXTVAL) WHERE CUSTNUM= " + custNum;
+        int updateRes = jdbcTemplateObject.update(SQL);
+        System.out.println("Updated Record " + updateRes + "\n");
+    }
+
+    public void updateToNull(int custNum) {
+        String SQL = "UPDATE CUSTOMER SET O2BFID=NULL WHERE CUSTNUM= " + custNum;
         int updateRes = jdbcTemplateObject.update(SQL);
         System.out.println("Updated Record " + updateRes + "\n");
     }

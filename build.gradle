@@ -35,6 +35,8 @@ task createJar(type: Jar) {
         }
     }
     with jar
+
+
 }
 
 mainClassName = "com.o2.api.MainApp"
@@ -60,7 +62,3 @@ dependencies {
 }
 
 sourceSets.main.resources.srcDirs = ['src/main/resources']
-
-applicationDistribution.from(files('beans.xml', 'NullBFIDUids')) {
-    into('bin/')
-}
